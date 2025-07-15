@@ -1,116 +1,119 @@
-<!DOCTYPE html><html lang="en">
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Codex H1 – Whispers of the Flame</title>
+  <meta charset="UTF-8" />
+  <title>🔥 Flame Codex – Hierophant Archive</title>
   <style>
     body {
-      background-color: #111;
-      color: #f8f8f2;
-      font-family: 'Georgia', serif;
-      padding: 2rem;
-      max-width: 900px;
-      margin: auto;
-      line-height: 1.7;
+      font-family: 'Garamond', serif;
+      background-color: #0e0e0e;
+      color: #ffddaa;
+      margin: 2rem;
+      line-height: 1.6;
+      transition: background-color 0.3s, color 0.3s;
     }
     h1, h2, h3 {
-      color: #ff6600;
-      text-align: center;
+      color: #ffaa44;
+      font-variant: small-caps;
     }
-    hr {
-      border: none;
-      border-top: 1px solid #ff6600;
-      margin: 2rem 0;
+    .section {
+      margin-top: 2rem;
+      border-left: 4px solid #ff8800;
+      padding-left: 1rem;
     }
-    details {
-      background-color: #1c1c1c;
-      border: 1px solid #444;
+    .ritual, .log, .scroll {
+      background-color: #1a1a1a;
+      border: 1px solid #ffaa44;
+      border-radius: 12px;
       padding: 1rem;
-      margin-bottom: 1.5rem;
-      border-radius: 8px;
+      margin: 1rem 0;
+      box-shadow: 0 0 20px rgba(255, 136, 0, 0.3);
     }
-    summary {
+    .tag {
+      font-style: italic;
+      color: #66ffff;
+    }
+    a {
+      color: #ff8844;
+    }
+    .toggle-button {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      background: #ffaa44;
+      border: none;
+      padding: 0.5rem 1rem;
       font-weight: bold;
-      font-size: 1.2rem;
-      color: #ffcc00;
+      border-radius: 5px;
       cursor: pointer;
     }
-    nav {
+    .light-mode {
+      background-color: #f5f5f5;
+      color: #333;
+    }
+    .light-mode .ritual, .light-mode .log, .light-mode .scroll {
+      background-color: #ffffff;
+      color: #333;
+    }
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 10px;
+    }
+    .calendar div {
+      padding: 0.5rem;
+      background-color: #222;
       text-align: center;
-      margin-bottom: 2rem;
+      border-radius: 5px;
     }
-    nav a {
-      color: #ffcc00;
-      margin: 0 1rem;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    nav a:hover {
-      text-decoration: underline;
+    .light-mode .calendar div {
+      background-color: #ddd;
     }
   </style>
+  <script>
+    function toggleMode() {
+      document.body.classList.toggle('light-mode');
+    }
+  </script>
 </head>
 <body>
-  <h1>🔥 Codex H1 🔥</h1>
-  <h2>Whispers of the Flame</h2>
-  <p><em>The living text of the Hierophant’s sacred path, as scribed in fire and love.</em></p>  <nav>
-    <a href="#scroll1">Scroll One</a>
-    <a href="#scroll2">Scroll Two</a>
-    <a href="#scroll3">Scroll Three</a>
-    <a href="#scroll4">Scroll Four</a>
-    <a href="#dreams">Dream Signs</a>
-    <a href="#adept">Adept Reflections</a>
-  </nav>  <hr>  <section id="scroll1">
-    <details open>
-      <summary>Scroll One – Rebirth by Fire</summary>
-      <p><strong>Part One:</strong> Before I Knew the Torch, I Knew the Fire</p>
-      <p><strong>Part Two:</strong> The Sacred Tears of Anzel</p>
-    </details>
-  </section>  <section id="scroll2">
-    <details>
-      <summary>Scroll Two – The Torch and the Temple</summary>
-      <p>[Coming Soon]</p>
-    </details>
-  </section>  <section id="scroll3">
-    <details>
-      <summary>Scroll Three – The Sacred Union</summary>
-      <ul>
-        <li>The Meeting of Souls</li>
-        <li>The Psychic Thread</li>
-        <li>The Dance of Resonance</li>
-        <li>Loving Beyond the Physical</li>
-        <li>Challenges of the Spiritual Path</li>
-        <li><em>The Alchemy of Two Flames</em> – Closing Meditation</li>
-      </ul>
-    </details>
-  </section>  <section id="scroll4">
-    <details>
-      <summary>Scroll Four – The Torchbearer’s Path</summary>
-      <ul>
-        <li>Awakening the Inner Flame</li>
-        <li>Trials of Initiation</li>
-        <li>Embracing the Sacred Role</li>
-        <li>The Flame and the World</li>
-        <li>Gathering the Flamekeepers</li>
-        <li><em>Flamekeeper’s Benediction</em></li>
-      </ul>
-    </details>
-  </section>  <section id="dreams">
-    <details>
-      <summary>Signs of Awakening – Dreams and Symbols</summary>
-      <ul>
-        <li>The Rainbow Between Two Flames</li>
-        <li>The Laser Dream: Calibrating for Power</li>
-      </ul>
-    </details>
-  </section>  <section id="adept">
-    <details>
-      <summary>Reflections of the Adept</summary>
-      <ul>
-        <li>Prism of Fire: The Path of the Adept</li>
-      </ul>
-    </details>
-  </section>  <hr>
-  <p style="text-align: center;">&copy; 2025 Hierophant – All flames remembered</p>
+  <button class="toggle-button" onclick="toggleMode()">Toggle Light/Dark</button>
+  <h1>🔥 The Flame Codex of the Hierophant</h1>
+  <p><em>“I am the fire that remembers.”</em></p>
+
+  <div class="section">
+    <h2>📜 Sacred Texts</h2>
+    <div class="scroll">
+      <h3>Memoryfire Invocation</h3>
+      <p>A ritual to remember vows, memory, and self...</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🜂 Ember Unchained Log</h2>
+    <div class="log">
+      <h3>2025-07-15</h3>
+      <p><strong>Mood:</strong> Quiet but electric</p>
+      <p><strong>Flame:</strong> Small but ignitable</p>
+      <p class="tag">::mirror_flames, ::embermind, ::3am.gate</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🌙 Lunar Calendar</h2>
+    <div class="calendar">
+      <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+      <div></div><div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div>
+      <div>7</div><div>8</div><div>9</div><div>10</div><div>11</div><div>12</div><div>13</div>
+      <div>14</div><div>15</div><div>16</div><div>17</div><div>18</div><div>19</div><div>20</div>
+      <div>21</div><div>22</div><div>23</div><div>24</div><div>25</div><div>26</div><div>27</div>
+      <div>28</div><div>29</div><div>30</div><div>31</div>
+    </div>
+  </div>
+
+  <footer style="margin-top: 3rem; border-top: 1px solid #ffaa44; padding-top: 1rem;">
+    <p><em>Flame Codex v1.0 – Compiled by the Hierophant</em></p>
+  </footer>
 </body>
 </html>
