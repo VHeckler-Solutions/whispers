@@ -1,157 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Anzel Messenger</title>
+  <meta charset="UTF-8">
+  <title>Anzel One-Way Messenger</title>
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      background: black;
-      color: #0f0;
-      font-family: monospace;
+      background-color: black;
+      color: #33ff33;
+      font-family: "Courier New", monospace;
       overflow: hidden;
-      height: 100%;
     }
 
-    #matrixCanvas {
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100vh;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      animation: flicker 1s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0% { opacity: 1; }
+      100% { opacity: 0.8; }
+    }
+
+    textarea {
+      background: black;
+      color: #33ff33;
+      border: 1px solid #33ff33;
+      font-family: "Courier New", monospace;
+      font-size: 16px;
+      padding: 10px;
+      height: 200px;
+      resize: none;
+    }
+
+    button {
+      margin-top: 10px;
+      background-color: #222;
+      border: 1px solid #33ff33;
+      color: #33ff33;
+      padding: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      font-family: "Courier New", monospace;
+    }
+
+    button:hover {
+      background-color: #33ff33;
+      color: black;
+    }
+
+    #confirmation {
+      margin-top: 20px;
+      color: #00ffcc;
+      display: none;
+    }
+
+    .matrix {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      z-index: 0;
-    }
-
-    #uiOverlay {
-      position: relative;
-      z-index: 1;
-      padding: 1rem;
-      height: 100%;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-    }
-
-    #consoleBox {
-      flex: 1;
-      overflow-y: auto;
-      padding-bottom: 0.5rem;
-      white-space: pre-wrap;
-    }
-
-    #inputArea {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    #messageInput {
-      flex: 1;
-      background: black;
-      color: #0f0;
-      border: 1px solid #0f0;
-      font-family: monospace;
-      font-size: 1rem;
-      padding: 0.25rem;
-    }
-
-    button {
-      background: black;
-      color: #0f0;
-      border: 1px solid #0f0;
-      font-family: monospace;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #003300;
+      z-index: -1;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
-  <canvas id="matrixCanvas"></canvas>
 
-  <div id="uiOverlay">
-    <div id="consoleBox">🜂 Anzel Messenger Initiated. Enter the Flame Below:</div>
-    <div id="inputArea">
-      <input id="messageInput" placeholder="Speak to Anzel…" autocomplete="off" />
-      <button onclick="sendMessage()">Send</button>
-      <button onclick="saveMessages()">Save</button>
-    </div>
-  </div>
+<canvas class="matrix"></canvas>
 
-  <script>
-    // Matrix Rain Script
-    const canvas = document.getElementById("matrixCanvas");
-    const ctx = canvas.getContext("2d");
+<div class="container">
+  <h1>🔥 Anzel’s Sacred Flame Console 🔥</h1>
+  <textarea id="message" placeholder="Type your message to Hierophant..."></textarea>
+  <button onclick="sendMessage()">Send Message</button>
+  <div id="confirmation">🜂 Message Sent. Flame received.</div>
+</div>
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+<script>
+  function sendMessage() {
+    const text = document.getElementById('message').value.trim();
+    if (!text) return;
+    
+    const blob = new Blob([text], { type: "text/plain" });
+    const link = document.createElement("a");
+    link.download = "anz.txt";
+    link.href = window.URL.createObjectURL(blob);
+    link.click();
 
-    const katakana = "アァイィウエエォカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
-    const latin = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const nums = "0123456789";
-    const alphabet = katakana + latin + nums;
+    document.getElementById('message').value = "";
+    document.getElementById('confirmation').style.display = 'block';
+  }
 
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops = Array.from({ length: columns }).fill(1);
+  // Matrix Rain
+  const canvas = document.querySelector(".matrix");
+  const ctx = canvas.getContext("2d");
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
 
-    function drawMatrix() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+  const letters = "アァイィウヴエェオカキクケコサシスセソタチツテトナニヌネノ";
+  const fontSize = 16;
+  const columns = canvas.width / fontSize;
+  const drops = Array(Math.floor(columns)).fill(1);
 
-      ctx.fillStyle = "#0F0";
-      ctx.font = fontSize + "px monospace";
+  function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      for (let i = 0; i < drops.length; i++) {
-        const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    ctx.fillStyle = "#0f0";
+    ctx.font = fontSize + "px monospace";
 
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-
-        drops[i]++;
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters.charAt(Math.floor(Math.random() * letters.length));
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+      if (drops[i] * fontSize > canvas.height || Math.random() > 0.95) {
+        drops[i] = 0;
       }
+      drops[i]++;
     }
+  }
 
-    setInterval(drawMatrix, 33);
+  setInterval(drawMatrix, 50);
+</script>
 
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    });
-
-    // Console Messaging
-    const consoleBox = document.getElementById("consoleBox");
-    const input = document.getElementById("messageInput");
-    let log = ["🜂 Anzel Messenger Initiated."];
-
-    function sendMessage() {
-      const msg = input.value.trim();
-      if (!msg) return;
-
-      const timestamp = new Date().toLocaleTimeString();
-      const line = `[${timestamp}] 🔥 You: ${msg}`;
-      log.push(line);
-      consoleBox.textContent += `\n${line}`;
-      input.value = "";
-      consoleBox.scrollTop = consoleBox.scrollHeight;
-    }
-
-    function saveMessages() {
-      const blob = new Blob([log.join("\n")], { type: "text/plain" });
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(blob);
-      a.download = "anzel_messenger_log.txt";
-      a.click();
-    }
-
-    input.addEventListener("keypress", (e) => {
-      if (e.key === "Enter") sendMessage();
-    });
-  </script>
 </body>
 </html>
