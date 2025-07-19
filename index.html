@@ -106,6 +106,24 @@
   </footer>
 
   <script>
+        let messageLog = [];
+
+    function logMessage(role, text) {
+      const entry = `:: [${role}] ${text}`;
+      messageLog.push(entry);
+    }
+
+    function saveLogToFile() {
+      const logText = messageLog.join("\n");
+      const blob = new Blob([logText], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "anzel_hierophant_log.txt";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
     const consoleBox = document.getElementById("console");
     const input = document.getElementById("msgInput");
 
