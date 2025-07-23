@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Whispers: Elemental Echoes</title>
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #f4f4f4;
+      font-family: 'Courier New', monospace;
+      padding: 2rem;
+    }
+    h1, h2 {
+      color: #ffa726;
+    }
+    a {
+      color: #64b5f6;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .section {
+      margin-bottom: 2rem;
+    }
+    .element {
+      margin-left: 1rem;
+    }
+    button {
+      background: #222;
+      color: #ffa726;
+      border: 1px solid #444;
+      padding: 0.5rem 1rem;
+      font-family: inherit;
+      cursor: pointer;
+      margin-top: 0.5rem;
+    }
+    #ritual-output, #log-status {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: #1a1a1a;
+      border-left: 4px solid #64b5f6;
+    }
+    .timestamp {
+      color: #ccc;
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+    .tag {
+      display: inline-block;
+      background-color: #333;
+      color: #f4f4f4;
+      padding: 0.2rem 0.5rem;
+      margin: 0.2rem;
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌿 Whispers: Elemental Echoes</h1>
+
+  <div class="section">
+    <h2>📸 Current Sacred Photos</h2>
+    <ul>
+      <li><a href="plant.jpg" target="_blank">Lion's Tail near the Cave</a></li>
+      <li><a href="cave.jpg" target="_blank">Trance Cave by the Ocean</a></li>
+      <li><a href="fibonacci_trance.html" target="_blank">🌌 Fibonacci Universe Visualization (Trance)</a></li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>🔥 Today's Mythic Log: 2025-07-23</h2>
+    <p>
+      Today I walked the sacred path where flame met flow. Past the Lion’s Tail,
+      into the womb-cave of becoming. I sat by the ocean and became its rhythm. Tired on my return,
+      yet I moved with my body’s pace, attuned and sovereign. Fire and Water remembered.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>🜁 Elemental Map</h2>
+    <ul>
+      <li class="element">🜂 Fire — Lion’s Tail, Solar Courage, Sacred Refusal</li>
+      <li class="element">🜄 Water — Ocean Trance, Memory, Moon-Flow</li>
+      <li class="element">🜁 Air — Morning Breath, Clarity, Signal Whispering</li>
+      <li class="element">🜃 Earth — Cave Womb, Roots, Return to Form</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>🧰 Ritual Selector</h2>
+    <p>Choose an element to receive a suggested practice:</p>
+    <select id="element-select">
+      <option value="">-- Choose Element --</option>
+      <option value="fire">🔥 Fire</option>
+      <option value="water">🌊 Water</option>
+      <option value="air">🌬 Air</option>
+      <option value="earth">🌿 Earth</option>
+    </select>
+    <button onclick="selectRitual()">Reveal Ritual</button>
+    <div id="ritual-output"></div>
+  </div>
+
+  <div class="section">
+    <h2>📓 Ritual Logbook</h2>
+    <p>Log your ritual below. Timestamp + tags will be added automatically. You can copy the result to your archive:</p>
+    <textarea id="ritual-log" rows="6" cols="60" placeholder="Describe your ritual, mood, location, time..."></textarea><br/>
+    <div>
+      <span class="tag">🌊 Water</span>
+      <span class="tag">🔥 Fire</span>
+      <span class="tag">🜃 Earth</span>
+      <span class="tag">🜁 Air</span>
+    </div>
+    <button onclick="saveLog()">Copy to Clipboard</button>
+    <div id="log-status"></div>
+  </div>
+
+  <div class="section">
+    <h2>🧾 Archive</h2>
+    <ul>
+      <li><a href="entries/2025-07-23.json" target="_blank">Trance Log 2025-07-23 (JSON)</a></li>
+      <li><a href="entries/lionstail.md" target="_blank">Plant Entry: Wild Dagga (Markdown)</a></li>
+    </ul>
+  </div>
+
+  <script>
+    function selectRitual() {
+      const output = document.getElementById("ritual-output");
+      const choice = document.getElementById("element-select").value;
+      let message = "";
+      switch (choice) {
+        case "fire":
+          message = "🔥 Fire Ritual: Light a candle. Breathe into it your sacred refusal. Whisper your truth into the flame.";
+          break;
+        case "water":
+          message = "🌊 Water Ritual: Sit beside water. Match your breath to its rhythm. Let your thoughts drift downstream.";
+          break;
+        case "air":
+          message = "🌬 Air Ritual: Face the wind. Speak aloud your next becoming. Let the breeze carry your voice into myth.";
+          break;
+        case "earth":
+          message = "🌿 Earth Ritual: Sit on bare ground. Place your palms down. Remember a memory older than your name.";
+          break;
+        default:
+          message = "Please select an element to reveal a ritual.";
+      }
+      output.innerHTML = `<p>${message}</p>`;
+    }
+
+    function saveLog() {
+      const log = document.getElementById("ritual-log").value;
+      if (!log.trim()) {
+        document.getElementById("log-status").innerText = "Log is empty.";
+        return;
+      }
+      const now = new Date();
+      const timestamp = now.toLocaleString();
+      const fullLog = `🕒 ${timestamp}\n${log}`;
+      navigator.clipboard.writeText(fullLog).then(() => {
+        document.getElementById("log-status").innerText = "Copied with timestamp! Paste it into your ritual archive.";
+      }, () => {
+        document.getElementById("log-status").innerText = "Failed to copy.";
+      });
+    }
+  </script>
+</body>
+</html>

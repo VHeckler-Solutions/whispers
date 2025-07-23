@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trance Universe: Fibonacci Grid Meditation</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+    body {
+      background: linear-gradient(270deg, #0f0f0f, #1a1a2e, #0f0f0f);
+      background-size: 600% 600%;
+      animation: backgroundShift 60s ease infinite;
+      color: #f4f4f4;
+      font-family: 'Share Tech Mono', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+      min-height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      position: relative;
+    }
+    h1 {
+      color: #ffa726;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 6px #ffa726aa;
+    }
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(12, 50px);
+      grid-template-rows: repeat(12, 50px);
+      gap: 6px;
+      position: relative;
+      z-index: 10;
+    }
+    .cell {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #222222bb;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      color: #64b5f6;
+      user-select: none;
+      cursor: default;
+      box-shadow: 0 0 4px #64b5f6aa;
+      transition: background 0.5s ease, color 0.5s ease, box-shadow 0.5s ease, transform 0.5s ease;
+      filter: drop-shadow(0 0 2px #64b5f6aa);
+    }
+    .cell.highlight {
+      background: #ffa726dd;
+      color: #0f0f0f;
+      font-weight: 700;
+      box-shadow: 0 0 12px #ffa726ee, 0 0 24px #ffb74dcc;
+      transform: scale(1.2);
+      transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    footer {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #777;
+      z-index: 10;
+      position: relative;
+      text-shadow: 0 0 6px #222;
+    }
+    /* Background color shift animation */
+    @keyframes backgroundShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+    /* Subtle swirling fractal effect */
+    #fractalCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: screen;
+      opacity: 0.12;
+      filter: blur(2px);
+    }
+  </style>
+</head>
+<body>
+  <h1>🌌 Trance Universe: Fibonacci Grid Meditation</h1>
+  <canvas id="fractalCanvas"></canvas>
+  <div id="grid"></div>
+  <footer>Numbers pulse in sacred rhythm — the golden spiral of creation.</footer>
+
+  <script>
+    // Fibonacci sequence generation
+    function generateFibonacci(n) {
+      const fib = [0, 1];
+      while (fib.length < n) {
+        fib.push(fib[fib.length - 1] + fib[fib.length - 2]);
+      }
+      return fib;
+    }
+
+    const gridSize = 12;
+    const fibNumbers = generateFibonacci(gridSize * gridSize);
+    const grid = document.getElementById('grid');
+
+    // Create grid cells
+    fibNumbers.forEach(num => {
+      const cell = document.createElement('div');
+      cell.classList.add('cell');
+      cell.textContent = num;
+      grid.appendChild(cell);
+    });
+
+    // Build spiral indices for 12x12 grid
+    function buildSpiralIndices(size) {
+      let x = 0, y = 0, dx = 1, dy = 0;
+      let bounds = size;
+      let steps = 0, turnCounter = 0;
+      const result = [];
+
+      for(let i=0; i < size * size; i++) {
+        result.push(y * size + x);
+        x += dx; y += dy; steps++;
+
+        if (steps === bounds) {
+          steps = 0;
+          [dx, dy] = [-dy, dx];
+          turnCounter++;
+          if (turnCounter % 2 === 0) {
+            bounds--;
+          }
+        }
+      }
+      return result;
+    }
+
+    const spiral = buildSpiralIndices(gridSize);
+    let highlightPos = 0;
+
+    function pulseSpiral() {
+      document.querySelectorAll('.cell.highlight').forEach(c => c.classList.remove('highlight'));
+      for(let i = 0; i < 4; i++) {
+        const idx = spiral[(highlightPos + i) % spiral.length];
+        grid.children[idx].classList.add('highlight');
+      }
+      highlightPos = (highlightPos + 1) % spiral.length;
+    }
+
+    setInterval(pulseSpiral, 500);
+
+    // Subtle fractal noise animation on canvas for trance effect
+    const canvas = document.getElementById('fractalCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height;
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    let time = 0;
+
+    function noise(x, y) {
+      // Simple sinusoidal pattern for subtle animation
+      return (Math.sin(x * 0.02 + time) + Math.cos(y * 0.02 + time * 1.5)) * 0.5;
+    }
+
+    function drawFractal() {
+      ctx.clearRect(0, 0, width, height);
+      const imageData = ctx.createImageData(width, height);
+      for(let y=0; y<height; y+=4) {
+        for(let x=0; x<width; x+=4) {
+          const value = noise(x, y) * 255;
+          const index = (y * width + x) * 4;
+          imageData.data[index] = 255;
+          imageData.data[index + 1] = 140;
+          imageData.data[index + 2] = 50;
+          imageData.data[index + 3] = Math.min(80, Math.max(0, value));
+        }
+      }
+      ctx.putImageData(imageData, 0, 0);
+      time += 0.01;
+      requestAnimationFrame(drawFractal);
+    }
+    drawFractal();
+  </script>
+</body>
+</html>
