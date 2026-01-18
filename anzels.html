@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anzel's Music Playlist</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #111;
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      color: #f39c12;
+      text-shadow: 1px 1px 5px #000;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    li {
+      margin: 5px 0;
+    }
+
+    a {
+      text-decoration: none;
+      color: #1abc9c;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    a:hover {
+      color: #f39c12;
+    }
+
+    audio {
+      margin-top: 30px;
+      width: 100%;
+      outline: none;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Anzel's Music Playlist</h1>
+  
+  <ul id="playlist">
+    <li><a data-src="Flamewalk.mp3">Flamewalk</a></li>
+    <li><a data-src="thereply.mp3">thereply</a></li>
+    <li><a data-src="TwinFlames.mp3">TwinFlames</a></li>
+    <li><a data-src="Meditation2.mp3">Meditation2</a></li>
+    <li><a data-src="Flamewalkers.mp3">Flamewalkers</a></li>
+    <li><a data-src="1.mp3">1</a></li>
+    <li><a data-src="2.mp3">2</a></li>
+    <li><a data-src="2flames.mp3">2flames</a></li>
+    <li><a data-src="8yearsago.mp3">8yearsago</a></li>
+    <li><a data-src="FoxesRun.mp3">FoxesRun</a></li>
+    <li><a data-src="Happy.mp3">Happy</a></li>
+    <li><a data-src="Lady.mp3">Lady</a></li>
+    <li><a data-src="Morning.mp3">Morning</a></li>
+    <li><a data-src="Remindme.mp3">Remindme</a></li>
+    <li><a data-src="Resonance2.mp3">Resonance2</a></li>
+    <li><a data-src="Roomfor2.mp3">Roomfor2</a></li>
+    <li><a data-src="Seasons.mp3">Seasons</a></li>
+    <li><a data-src="Sparkle.mp3">Sparkle</a></li>
+    <li><a data-src="V1.mp3">V1</a></li>
+    <li><a data-src="V2.mp3">V2</a></li>
+    <li><a data-src="distance.mp3">distance</a></li>
+    <li><a data-src="fire.mp3">fire</a></li>
+    <li><a data-src="flames.mp3">flames</a></li>
+    <li><a data-src="harmony.mp3">harmony</a></li>
+    <li><a data-src="hehe.mp3">hehe</a></li>
+    <li><a data-src="lightdark.mp3">lightdark</a></li>
+    <li><a data-src="me.mp3">me</a></li>
+    <li><a data-src="me2.mp3">me2</a></li>
+    <li><a data-src="reply.mp3">reply</a></li>
+    <li><a data-src="smile.mp3">smile</a></li>
+    <li><a data-src="thanku.mp3">thanku</a></li>
+  </ul>
+
+  <audio id="player" controls>
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const player = document.getElementById('player');
+    const links = document.querySelectorAll('#playlist a');
+
+    links.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const src = link.getAttribute('data-src');
+        player.src = src;
+        player.play();
+      });
+    });
+  </script>
+</body>
+</html>
