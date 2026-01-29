@@ -3,216 +3,97 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Living Upstream</title>
-
+  <title>Slow Burn - Upstream</title>
   <style>
-    body {
+    /* Fullscreen canvas for falling emojis */
+    body, html {
       margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      color: #1e1e1e;
-      background: #ffffff;
-      line-height: 1.7;
+      padding: 0;
+      overflow: hidden;
+      height: 100%;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Courier New', monospace;
     }
 
-    /* ===== Navigation ===== */
-    .site-header {
-      border-bottom: 1px solid #ddd;
-      padding: 18px 40px;
+    canvas {
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
     }
 
-    .nav-container {
-      max-width: 1000px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .brand a {
-      text-decoration: none;
-      font-size: 1.2em;
-      font-weight: 600;
-      color: #1e1e1e;
-      letter-spacing: 1px;
-    }
-
-    .nav-links a {
-      margin-left: 22px;
-      text-decoration: none;
-      color: #333;
-      font-size: 0.95em;
-    }
-
-    .nav-links a:hover {
-      text-decoration: underline;
-    }
-
-    /* ===== Sections ===== */
-    .hero {
-      padding: 80px 40px;
-      max-width: 900px;
-      margin: auto;
-    }
-
-    .hero h1 {
-      font-size: 2.4em;
-      margin-bottom: 0.4em;
-    }
-
-    .hero p {
-      font-size: 1.1em;
-      margin-bottom: 1.6em;
-    }
-
-    .cta {
-      display: inline-block;
-      padding: 12px 22px;
-      border: 1px solid #333;
-      text-decoration: none;
-      color: #333;
-    }
-
-    .cta:hover {
-      background: #f2f2f2;
-    }
-
-    section {
-      padding: 60px 40px;
-      max-width: 900px;
-      margin: auto;
-    }
-
-    h2 {
-      margin-top: 0;
-    }
-
-    ul {
-      padding-left: 20px;
-    }
-
-    blockquote {
-      border-left: 4px solid #333;
-      padding-left: 16px;
-      margin: 1.5em 0;
-      font-style: italic;
-    }
-
-    footer {
-      border-top: 1px solid #ddd;
-      padding: 30px 40px;
+    /* Centered links */
+    .menu {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       text-align: center;
-      font-size: 0.9em;
-      color: #555;
+      z-index: 1;
+    }
+
+    .menu a {
+      display: block;
+      font-size: 2rem;
+      text-decoration: none;
+      color: #ffccaa;
+      margin: 20px 0;
+      transition: 0.3s;
+    }
+
+    .menu a:hover {
+      color: #ffffff;
+      transform: scale(1.1);
     }
   </style>
 </head>
-
 <body>
+  <canvas id="matrixCanvas"></canvas>
 
-<!-- ===== Header ===== -->
-<header class="site-header">
-  <div class="nav-container">
-    <div class="brand">
-      <a href="index.html">Living Upstream</a>
-    </div>
-    <nav class="nav-links">
-      <a href="episodes.html">Episodes</a>
-      <a href="ethics.html">Ethics</a>
-      <a href="premium.html">Premium</a>
-      <a href="donate.html">Donate</a>
-      <a href="#contact">Contact</a>
-    </nav>
+  <div class="menu">
+    <a href="english.html">🇬🇧 English</a>
+    <a href="afrikaans.html">🇿🇦 Afrikaans</a>
   </div>
-</header>
 
-<!-- ===== Hero ===== -->
-<div class="hero">
-  <h1>Alignment Is the Forgotten Skill</h1>
-  <p>
-    Living Upstream is an educational journey into consciousness, metacognition,
-    and emotional clarity. It teaches how to drive the human system with awareness,
-    responsibility, and grounded realism.
-  </p>
-  <a class="cta" href="episodes.html">Begin the Journey</a>
-</div>
+  <script>
+    const canvas = document.getElementById('matrixCanvas');
+    const ctx = canvas.getContext('2d');
 
-<!-- ===== About ===== -->
-<section>
-  <h2>What Is Living Upstream?</h2>
-  <p>
-    Most people are not broken. They are misaligned.
-  </p>
-  <p>
-    Thoughts override awareness. Emotions hijack action. Attention fragments.
-    The result is unnecessary suffering — often mistaken for personal failure.
-  </p>
-  <p>
-    Living Upstream restores alignment by teaching practical awareness,
-    emotional regulation, perceptual clarity, and relational intelligence.
-  </p>
+    let width = canvas.width = window.innerWidth;
+    let height = canvas.height = window.innerHeight;
 
-  <blockquote>
-    Stop fixing yourself.<br>
-    Start aligning the system.
-  </blockquote>
-</section>
+    const emojis = ['🦊','🔥','✨','🌱','🌙','💫','🌊','⚡','🌿']; // Upstream themed emojis
+    const fontSize = 28;
+    const columns = Math.floor(width / fontSize);
 
-<!-- ===== Episodes Overview ===== -->
-<section>
-  <h2>The Five-Season Journey</h2>
-  <ul>
-    <li><strong>Season 1:</strong> Identifying Consciousness</li>
-    <li><strong>Season 2:</strong> Metacognition & Control</li>
-    <li><strong>Season 3:</strong> Clearing Mental Filters</li>
-    <li><strong>Season 4:</strong> Mental Atmosphere & Relationships</li>
-    <li><strong>Season 5:</strong> Group Dynamics & Living Upstream Together</li>
-  </ul>
-  <p>
-    Each episode is short, grounded, and designed for real-world application.
-  </p>
-</section>
+    const drops = Array(columns).fill(1);
 
-<!-- ===== Ethics Summary ===== -->
-<section>
-  <h2>Ethical Foundation</h2>
-  <p>
-    Living Upstream is educational content — not medical or psychiatric treatment.
-    It promotes responsibility without blame and awareness without coercion.
-  </p>
-  <p>
-    If you are experiencing severe psychological distress, please seek
-    professional support.
-  </p>
-  <p>
-    <a href="ethics.html">Read the full ethical disclaimer →</a>
-  </p>
-</section>
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, width, height);
 
-<!-- ===== Contact ===== -->
-<section id="contact">
-  <h2>Contact</h2>
-  <p>
-    For questions, collaboration, or feedback:
-  </p>
-  <p><strong>contact@livingupstream.org</strong></p>
-</section>
+      ctx.fillStyle = "#ffccaa";
+      ctx.font = fontSize + "px monospace";
 
-<!-- ===== Support ===== -->
-<section>
-  <h2>Support the Work</h2>
-  <p>
-    Living Upstream is offered freely and responsibly.
-    If this work brings clarity to your life, you may choose to support its continuation.
-  </p>
-  <p>
-    <a class="cta" href="donate.html">Support Living Upstream</a>
-  </p>
-</section>
+      for (let i = 0; i < drops.length; i++) {
+        const text = emojis[Math.floor(Math.random() * emojis.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-<!-- ===== Footer ===== -->
-<footer>
-  <p>© Living Upstream — Awareness · Alignment · Responsibility</p>
-</footer>
+        if (drops[i] * fontSize > height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
 
+    setInterval(draw, 50);
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+  </script>
 </body>
 </html>
