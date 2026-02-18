@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anzel Music</title>
+
+<style>
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+  background:#06060c;
+  color:white;
+  min-height:100vh;
+  overflow:hidden;
+}
+
+/* Content */
+.content{
+  position:relative;
+  z-index:2;
+  padding:40px 30px;
+}
+
+h1{
+  margin:0 0 20px 0;
+  font-size:20px;
+}
+
+ul{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+
+li{
+  margin:14px 0;
+}
+
+a{
+  color:#8ef5d4;
+  text-decoration:none;
+  font-size:16px;
+  cursor:pointer;
+}
+
+a:hover{
+  text-decoration:underline;
+}
+
+/* Audio */
+audio{
+  margin-top:25px;
+  width:100%;
+  max-width:500px;
+}
+
+/* Emoji Rain */
+.rain{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:0;
+  overflow:hidden;
+}
+
+.drop{
+  position:absolute;
+  top:-60px;
+  font-size:22px;
+  opacity:0.5;
+  animation: fall linear infinite;
+  user-select:none;
+}
+
+@keyframes fall{
+  from{ transform:translateY(-80px); }
+  to{ transform:translateY(110vh); }
+}
+</style>
+</head>
+<body>
+
+<div class="rain" id="rain"></div>
+
+<div class="content">
+  <h1>🎧 Anzel Music</h1>
+
+  <ul>
+    <li><a data-file="Living.mp3">🔥 Living</a></li>
+    <li><a data-file="FreqFlame.mp3">🎛️ FreqFlame</a></li>
+    <li><a data-file="Rise.mp3">🌅 Rise</a></li>
+  </ul>
+
+  <audio id="player" controls></audio>
+</div>
+
+<script>
+/* ===== MUSIC PLAY IN PAGE ===== */
+const player = document.getElementById("player");
+
+document.querySelectorAll("a[data-file]").forEach(link=>{
+  link.addEventListener("click",()=>{
+    const file = link.getAttribute("data-file");
+    player.src = file;        // same folder
+    player.play().catch(()=>{});
+  });
+});
+
+/* ===== EMOJI RAIN ===== */
+const rain = document.getElementById("rain");
+const emojis = ["✨","🌙","🔥","🎶","🦊","⚡","🌀","💫","🫧"];
+
+function rand(min,max){ return Math.random()*(max-min)+min; }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+function spawn(){
+  const d = document.createElement("div");
+  d.className="drop";
+  d.textContent = pick(emojis);
+
+  d.style.left = rand(0,100)+"vw";
+  d.style.fontSize = rand(16,28)+"px";
+  d.style.animationDuration = rand(14,24)+"s";
+
+  rain.appendChild(d);
+  setTimeout(()=>d.remove(),26000);
+}
+
+for(let i=0;i<20;i++) spawn();
+setInterval(spawn,450);
+</script>
+
+</body>
+</html>
