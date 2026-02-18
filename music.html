@@ -7,34 +7,247 @@
   <style>
     :root{
       --bg:#07070b;
-      --panel:#0f1020;
-      --txt:#eaeaf2;
-      --muted:#a7a7c0;
-      --accent:#7cf7d4;
+      --panel:rgba(255,255,255,.06);
+      --border:rgba(255,255,255,.12);
+      --text:rgba(255,255,255,.92);
+      --muted:rgba(255,255,255,.65);
     }
     *{box-sizing:border-box}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 700px at 50% -10%, #1c1f3a, var(--bg));
-      color:var(--txt);
       min-height:100vh;
       display:flex;
       align-items:center;
       justify-content:center;
-      padding:24px;
+      padding:22px;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(1000px 600px at 50% -10%, #1e235055, transparent 60%),
+        linear-gradient(180deg, #060610, var(--bg));
+      color:var(--text);
     }
-    .wrap{
-      width:min(980px, 100%);
-      background: color-mix(in srgb, var(--panel) 86%, black);
-      border: 1px solid rgba(255,255,255,.08);
-      border-radius: 18px;
-      padding: 18px 18px 22px;
-      box-shadow: 0 20px 60px rgba(0,0,0,.45);
+    .card{
+      width:min(860px, 100%);
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.25);
+      border-radius:18px;
+      padding:16px;
+      box-shadow: 0 22px 60px rgba(0,0,0,.45);
     }
     header{
       display:flex;
-      gap:14px;
+      flex-wrap:wrap;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom:12px;
+    }
+    h1{
+      margin:0;
+      font-size:18px;
+      letter-spacing:.3px;
+    }
+    .sub{
+      margin:4px 0 0;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.35;
+    }
+    .controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    select, button{
+      border:1px solid var(--border);
+      background:var(--panel);
+      color:var(--text);
+      border-radius:12px;
+      padding:10px 12px;
+      font-size:14px;
+      outline:none;
+    }
+    button{
+      cursor:pointer;
+      transition: transform .08s ease, background .15s ease;
+      font-weight:650;
+    }
+    button:hover{ background:rgba(255,255,255,.09); }
+    button:active{ transform: scale(.98); }
+
+    audio{ width:100%; margin-top:10px; }
+
+    .stage{
+      margin-top:14px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      border-radius:16px;
+      height:min(58vh, 420px);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* The Big Smiley */
+    .smiley{
+      font-size: 180px;
+      line-height: 1;
+      transform: scale(1);
+      will-change: transform, filter;
+      user-select:none;
+      filter: drop-shadow(0 20px 24px rgba(0,0,0,.45));
+    }
+
+    .status{
+      position:absolute;
+      top:10px;
+      right:12px;
+      font-size:12px;
+      color:var(--muted);
+      background:rgba(0,0,0,.25);
+      border:1px solid rgba(255,255,255,.10);
+      padding:6px 10px;
+      border-radius:999px;
+      user-select:none;
+    }
+
+    .note{
+      margin-top:10px;
+      font-size:12px;
+      color:var(--muted);
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    code{ color: rgba(255,255,255,.75); }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <header>
+      <div>
+        <h1>😊 Anzel Music</h1>
+        <div class="sub">Pick a track. Press play. Smiley goes bouncy. Browsers demand a click first because they’re dramatic.</div>
+      </div>
+
+      <div class="controls">
+        <select id="track">
+          <option value="Living.mp3">🔥 Living</option>
+          <option value="FreqFlame.mp3">🎛️ FreqFlame</option>
+          <option value="Rise.mp3">🌅 Rise</option>
+        </select>
+        <button id="load">Load</button>
+        <button id="enable">Enable Bounce</button>
+      </div>
+    </header>
+
+    <audio id="audio" controls preload="metadata" crossorigin="anonymous">
+      <source id="src" src="Living.mp3" type="audio/mpeg" />
+      Your browser can’t play this audio.
+    </audio>
+
+    <div class="stage">
+      <div class="status" id="status">idle</div>
+      <div class="smiley" id="smiley">😊</div>
+    </div>
+
+    <div class="note">
+      <div>Put this file in <code>/whispers/</code> next to the MP3s.</div>
+      <div>Open: <code>https://vheckler-solutions.github.io/whispers/music.html</code></div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const audio = document.getElementById("audio");
+  const src = document.getElementById("src");
+  const track = document.getElementById("track");
+  const loadBtn = document.getElementById("load");
+  const enableBtn = document.getElementById("enable");
+  const smiley = document.getElementById("smiley");
+  const status = document.getElementById("status");
+
+  let ctx = null, analyser = null, sourceNode = null, data = null;
+  let enabled = false, raf = null;
+
+  function setStatus(t){ status.textContent = t; }
+
+  function loadSelected(){
+    src.src = track.value;   // assumes same folder as this HTML
+    audio.load();
+    setStatus("loaded");
+  }
+
+  function enableBounce(){
+    if (enabled) return;
+    // Must be created from a user gesture
+    ctx = new (window.AudioContext || window.webkitAudioContext)();
+    analyser = ctx.createAnalyser();
+    analyser.fftSize = 1024;
+    analyser.smoothingTimeConstant = 0.82;
+
+    sourceNode = ctx.createMediaElementSource(audio);
+    sourceNode.connect(analyser);
+    analyser.connect(ctx.destination);
+
+    data = new Uint8Array(analyser.frequencyBinCount);
+    enabled = true;
+    setStatus("bounce enabled ✅");
+    animate();
+  }
+
+  function animate(){
+    if (!enabled) return;
+
+    analyser.getByteFrequencyData(data);
+
+    // Average energy 0..1
+    let sum = 0;
+    for (let i = 0; i < data.length; i++) sum += data[i];
+    const energy = sum / (data.length * 255);
+
+    // Make it feel nice: base + punch, clamp a bit
+    const scaled = Math.min(1.0, Math.pow(energy * 1.8, 0.85));
+    const scale = 0.92 + scaled * 0.55; // from ~0.92 to ~1.47
+
+    smiley.style.transform = `scale(${scale.toFixed(3)})`;
+
+    // tiny glow change so it looks alive
+    const glow = 18 + scaled * 26;
+    smiley.style.filter = `drop-shadow(0 ${glow.toFixed(0)}px ${Math.round(glow*1.2)}px rgba(0,0,0,.45))`;
+
+    raf = requestAnimationFrame(animate);
+  }
+
+  // UI
+  loadBtn.addEventListener("click", loadSelected);
+  enableBtn.addEventListener("click", async () => {
+    enableBounce();
+    if (ctx && ctx.state === "suspended") await ctx.resume();
+  });
+
+  audio.addEventListener("play", async () => {
+    if (!enabled) {
+      setStatus("hit Enable Bounce 👆");
+      return;
+    }
+    if (ctx && ctx.state === "suspended") await ctx.resume();
+    setStatus("playing ▶️");
+  });
+
+  audio.addEventListener("pause", () => setStatus("paused ⏸️"));
+  audio.addEventListener("ended", () => setStatus("ended 🫡"));
+
+  // default
+  loadSelected();
+})();
+</script>
+</body>
+</html>      gap:14px;
       align-items:flex-start;
       justify-content:space-between;
       flex-wrap:wrap;
